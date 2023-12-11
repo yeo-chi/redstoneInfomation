@@ -14,7 +14,7 @@ class Item(
     val kind: ItemKind,
 
     @Indexed
-    var type: LinkedHashSet<ItemTag>,
+    var tags: LinkedHashSet<ItemTag>,
 
     @Indexed
     val name: String,

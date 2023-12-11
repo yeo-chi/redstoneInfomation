@@ -20,7 +20,7 @@ data class CreateItemRequest(
     fun toEntity(): Item {
         return Item(
             kind = kind,
-            type = type,
+            tags = type,
             name = name,
             options = options,
             subOptions = subOptions,

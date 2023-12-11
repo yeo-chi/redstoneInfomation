@@ -23,7 +23,7 @@ data class ItemResponse(
     constructor(item: Item) : this(
         id = item.id,
         kind = item.kind,
-        type = item.type,
+        type = item.tags,
         name = item.name,
         options = item.options,
         subOptions = item.subOptions,

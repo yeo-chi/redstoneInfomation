@@ -16,4 +16,8 @@ class ItemService(
     fun create(request: CreateItemRequest): Item {
         return itemRepository.save(request.toEntity())
     }
+
+    fun createAll(items: List<Item>): List<Item> {
+        return itemRepository.saveAll(items)
+    }
 }
