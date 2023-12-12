@@ -7,15 +7,15 @@ import yeo.chi.redstoneInformation.persistant.entity.ItemTag
 data class CreateItemRequest(
     val kind: ItemKind,
 
-    var type: LinkedHashSet<ItemTag>,
+    var type: List<ItemTag>,
 
     val name: String,
 
-    val options: LinkedHashSet<String>,
+    val options: List<String>,
 
-    val subOptions: LinkedHashSet<String>,
+    val subOptions: List<String>,
 
-    val condition: LinkedHashSet<String>,
+    val condition: List<String>,
 ) {
     fun toEntity(): Item {
         return Item(

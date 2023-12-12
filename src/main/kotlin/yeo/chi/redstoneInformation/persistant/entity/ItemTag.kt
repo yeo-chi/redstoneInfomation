@@ -1,17 +1,26 @@
 package yeo.chi.redstoneInformation.persistant.entity
 
 enum class ItemTag(val description: String) {
-    ETERNAL("이터널"),
+    BLACK_FIRE("블랙파이어"),
 
-    YATIKANU("야티카누"),
-
-    SECRET("비밀던전"),
-
-    PVP("피빕용"),
-
-    ULTIMATE("얼티메이트"),
+    CORRUPTION("커럽"),
 
     DX("DX"),
 
-    CORRUPTION("커럽"),
+    ETERNAL("이터널"),
+
+    SECRET("비밀던전"),
+
+    PVP("PVP"),
+
+    ULTIMATE("얼티메이트"),
+
+    YATIKANU("야티카누"),
+    ;
+
+    companion object {
+        private val associateValue = ItemTag.values().associateBy { it.description }
+
+        fun getItemTag(description: String) = associateValue[description] ?: throw NoSuchElementException()
+    }
 }

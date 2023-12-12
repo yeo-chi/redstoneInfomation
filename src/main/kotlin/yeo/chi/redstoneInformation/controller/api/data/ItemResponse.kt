@@ -10,15 +10,15 @@ data class ItemResponse(
 
     val kind: ItemKind,
 
-    var type: LinkedHashSet<ItemTag>,
+    var type: List<ItemTag>,
 
     val name: String,
 
-    val options: LinkedHashSet<String>,
+    val options: List<String>,
 
-    val subOptions: LinkedHashSet<String>,
+    val subOptions: List<String>,
 
-    val condition: LinkedHashSet<String>,
+    val condition: List<String>,
 ) {
     constructor(item: Item) : this(
         id = item.id,

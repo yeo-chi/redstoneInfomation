@@ -14,15 +14,15 @@ class Item(
     val kind: ItemKind,
 
     @Indexed
-    var tags: LinkedHashSet<ItemTag>,
+    var tags: List<ItemTag>,
 
     @Indexed
     val name: String,
 
     @Indexed
-    val options: LinkedHashSet<String>,
+    val options: List<String>,
 
-    val subOptions: LinkedHashSet<String>,
+    val subOptions: List<String>,
 
-    val condition: LinkedHashSet<String>,
+    val condition: List<String>,
 )
