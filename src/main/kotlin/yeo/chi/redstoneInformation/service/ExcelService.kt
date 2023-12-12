@@ -18,12 +18,12 @@ class ExcelService {
         return rows.asSequence().toList().map {
             it.iterator().asSequence().toList().let { cells ->
                 Item(
-                    kind = ItemKind.valueOf(cells[1].stringCellValue),
-                    tags = getTags(cells[2]),
-                    name = cells[3].stringCellValue,
-                    options = getOptions(cells[4]),
-                    subOptions = getSubOptions(cells[5]),
-                    condition = getCondition(cells[6]),
+                    kind = ItemKind.valueOf(cells[0].stringCellValue),
+                    tags = getTags(cells[1]),
+                    name = cells[2].stringCellValue,
+                    options = getOptions(cells[3]),
+                    subOptions = getSubOptions(cells[4]),
+                    condition = getCondition(cells[5]),
                 )
             }
         }.also { workbook.close() }

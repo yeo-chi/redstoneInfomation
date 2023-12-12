@@ -5,3 +5,12 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/redStone
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
