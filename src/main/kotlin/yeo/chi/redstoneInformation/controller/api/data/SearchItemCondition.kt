@@ -11,4 +11,8 @@ data class SearchItemCondition(
     val name: String? = null,
 
     val option: String? = null,
-)
+) {
+    fun isKindNotAll(): Boolean {
+        return kind?.isNotAll() ?: false
+    }
+}

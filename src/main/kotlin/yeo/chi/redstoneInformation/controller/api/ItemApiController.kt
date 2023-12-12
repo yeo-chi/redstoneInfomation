@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus.OK
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -30,6 +31,10 @@ class ItemApiController(
     fun getList(itemCondition: SearchItemCondition): List<ItemResponse> {
         return itemService.getList(itemCondition = itemCondition).map(::ItemResponse)
     }
+
+    @GetMapping("{id}")
+    @ResponseStatus(OK)
+    fun get(@PathVariable("id") id: String) = itemService.get(id = id).let(::ItemResponse)
 
     @PostMapping
     @ResponseStatus(CREATED)

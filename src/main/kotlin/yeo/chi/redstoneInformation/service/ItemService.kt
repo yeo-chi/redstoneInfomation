@@ -1,9 +1,11 @@
 package yeo.chi.redstoneInformation.service
 
 import io.micrometer.common.util.StringUtils
+import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import yeo.chi.redstoneInformation.controller.api.data.CreateItemRequest
 import yeo.chi.redstoneInformation.controller.api.data.SearchItemCondition
@@ -20,6 +22,8 @@ class ItemService(
         return mongoTemplate.find(getQuery(itemCondition = itemCondition), Item::class.java)
     }
 
+    fun get(id: String) = itemRepository.findByIdOrNull(id = ObjectId(id)) ?: throw NoSuchElementException()
+
     fun create(request: CreateItemRequest): Item {
         return itemRepository.save(request.toEntity())
     }
@@ -30,12 +34,12 @@ class ItemService(
 
     private fun getQuery(itemCondition: SearchItemCondition): Query {
         return with(Criteria.where("id").ne(null)) {
-            if (itemCondition.kind != null) {
+            if (itemCondition.kind != null && itemCondition.isKindNotAll()) {
                 and("kind").`is`(itemCondition.kind)
             }
 
             if (itemCondition.tags.isNotEmpty()) {
-                and("tags").`in`(itemCondition)
+                and("tags").`in`(itemCondition.tags)
             }
 
             if (!StringUtils.isBlank(itemCondition.name)) {

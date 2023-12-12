@@ -6,7 +6,7 @@ import yeo.chi.redstoneInformation.persistant.entity.ItemKind
 import yeo.chi.redstoneInformation.persistant.entity.ItemTag
 
 data class ItemResponse(
-    val id: ObjectId,
+    val id: String,
 
     val kind: ItemKind,
 
@@ -21,7 +21,7 @@ data class ItemResponse(
     val condition: List<String>,
 ) {
     constructor(item: Item) : this(
-        id = item.id,
+        id = item.id.toString(),
         kind = item.kind,
         type = item.tags,
         name = item.name,

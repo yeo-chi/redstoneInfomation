@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: black;
+            margin: 15% auto;
+            padding: 20px;
+            border: 2px solid red;
+            width: 295px;
+            color: white;
+        }
+
+        /* Name 영역 스타일 */
+        #nameArea {
+            color: rgb(191, 96, 55);
+        }
+
+        /* 나머지 영역 스타일 */
+        #optionsArea,
+        #subOptionsArea,
+        #conditionArea {
+            color: white;
+        }
+
+        /* 리스트 스타일 수정 */
+        #optionsArea ul,
+        #subOptionsArea ul,
+        #conditionArea ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #optionsArea li,
+        #subOptionsArea li,
+        #conditionArea li {
+            list-style-type: "-";
+            margin-bottom: 5px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    </style>
+    <title>아이템 검색</title>
+</head>
+<body>
+
+<h2>아이템 검색</h2>
+
+<form id="searchForm">
+    <!-- 이름 검색 -->
+    <label for="name">아이템 이름:</label>
+    <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
+
+    <!-- 옵션 검색 -->
+    <label for="option">옵션:</label>
+    <input type="text" id="option" name="option" placeholder="옵션을 입력하세요">
+
+    <!-- Type 검색 (select box) -->
+    <label for="kind">Type:</label>
+    <select id="kind" name="kind">
+        <option value="ALL" selected>전체</option>
+        <option value="PUBLIC_ARMOR">공용갑옷</option>
+        <option value="CROWN">관</option>
+        <option value="EARRING">귀걸이</option>
+        <option value="WING">날개</option>
+        <option value="SICKLE">낫</option>
+        <option value="DAGGER">단도</option>
+        <option value="STAFF">마법지팡이</option>
+        <option value="WAND">마술봉</option>
+        <option value="CLOAK">망토</option>
+        <option value="MACE">철퇴</option>
+        <option value="NECKLACE">목걸이</option>
+        <option value="RING">반지</option>
+        <option value="NAIL">손톱</option>
+        <option value="SHIELD">방패</option>
+        <option value="BELT">벨트</option>
+        <option value="BOOTS">신발</option>
+        <option value="BROOMSTICK">빗자루</option>
+        <option value="CLAW">클로</option>
+        <option value="SLING">슬링</option>
+        <option value="BLADE">양손검</option>
+        <option value="TEETH">이빨</option>
+        <option value="GLOVES">장갑</option>
+        <option value="THROWER">투척기</option>
+        <option value="EXCLUSIVE_ARMOR">전용갑옷</option>
+        <option value="LANCE">창</option>
+        <option value="GUN">총</option>
+        <option value="WHIP">채찍</option>
+        <option value="BOOK">책</option>
+        <option value="BRACELET">팔찌</option>
+        <option value="FLUTE">피리</option>
+        <option value="SWORD">한손검</option>
+        <option value="HELMET">헬멧</option>
+        <option value="ARROW">화살</option>
+        <option value="BOW">활</option>
+        <option value="DOUBLE_SWORD">쌍검</option>
+        <option value="DARK_CORE">다크코어</option>
+        <option value="ALCHEMY_STONE">연금석</option>
+        <option value="ANCHOR">닻</option>
+    </select>
+
+    <!-- Tag 검색 (checkbox) -->
+    <fieldset>
+        <legend>태그:</legend>
+        <input type="checkbox" id="tag1" name="tags" value="BLACK_FIRE">
+        <label for="tag1">블랙파이어</label>
+
+        <input type="checkbox" id="tag2" name="tags" value="CORRUPTION">
+        <label for="tag2">커럽티드</label>
+
+        <input type="checkbox" id="tag3" name="tags" value="DX">
+        <label for="tag3">DX</label>
+
+        <input type="checkbox" id="tag4" name="tags" value="ETERNAL">
+        <label for="tag4">이터널</label>
+
+        <input type="checkbox" id="tag5" name="tags" value="SECRET">
+        <label for="tag5">비밀던전</label>
+
+        <input type="checkbox" id="tag6" name="tags" value="PVP">
+        <label for="tag6">PVP</label>
+
+        <input type="checkbox" id="tag7" name="tags" value="ULTIMATE">
+        <label for="tag7">얼티메이트</label>
+
+        <input type="checkbox" id="tag8" name="tags" value="YATIKANU">
+        <label for="tag8">야티카누</label>
+    </fieldset>
+
+    <!-- 검색 버튼 -->
+    <button type="button" onclick="searchItem()">검색</button>
+</form>
+
+<div id="resultItems"></div>
+
+<!-- 모달 창 -->
+<div id="myModal" class="modal">
+    <div class="modal-content" id="modalContent">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <!-- Name 영역 -->
+        <div id="nameArea"></div>
+        <!-- Options 영역 -->
+        <div style="color: aqua;">기본 정보</div>
+        <div id="optionsArea" style="margin-bottom: 20px;"></div>
+        <!-- SubOptions 영역 -->
+        <div style="color: aqua;">연마 정보</div>
+        <div id="subOptionsArea" style="margin-bottom: 20px;"></div>
+        <!-- Condition 영역 -->
+        <div style="color: aqua;">요구 능력치</div>
+        <div id="conditionArea"></div>
+    </div>
+</div>
+
+<script>
+    function searchItem() {
+        const formData = new FormData(document.getElementById('searchForm'));
+        const queryString = new URLSearchParams(formData).toString();
+
+        fetch('/api/v1/items?' + queryString)
+        .then(response => response.json())
+        .then(data => {
+            const resultItems = document.getElementById('resultItems');
+
+            resultItems.innerHTML = '';
+
+            const ul = document.createElement('ul');
+
+            for (const item of data) {
+                const li = document.createElement('li');
+                li.textContent = item.name;
+                li.addEventListener('click', () => getItemDetail(item.id));
+                ul.appendChild(li);
+            }
+
+            resultItems.appendChild(ul);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function getItemDetail(id) {
+        fetch('/api/v1/items/'+id)
+        .then(response => response.json())
+        .then(data => {
+            const nameArea = document.getElementById('nameArea');
+            nameArea.innerHTML = `<p>${data.name}</p>`;
+
+            const optionsArea = document.getElementById('optionsArea');
+            optionsArea.innerHTML = '';
+            const ul = document.createElement('ul');
+
+            for (const option of data.options) {
+                const li = document.createElement('li');
+                li.textContent = option;
+                ul.appendChild(li);
+            }
+
+            optionsArea.appendChild(ul);
+
+            const subOptionsArea = document.getElementById('subOptionsArea');
+            subOptionsArea.innerHTML = '';
+            const ul1 = document.createElement('ul');
+
+            for (const subOption of data.subOptions) {
+                const li = document.createElement('li');
+                li.textContent = subOption;
+                ul1.appendChild(li);
+            }
+
+            subOptionsArea.appendChild(ul1);
+
+            const conditionArea = document.getElementById('conditionArea');
+            conditionArea.innerHTML = '';
+            const ul2 = document.createElement('ul');
+
+            for (const condition of data.condition) {
+                const li = document.createElement('li');
+                li.textContent = condition;
+                ul2.appendChild(li);
+            }
+
+            conditionArea.appendChild(ul2);
+
+            const modal = document.getElementById('myModal');
+            modal.style.display = 'block';
+        })
+    }
+
+    // 모달 창 닫기
+    function closeModal() {
+        const modal = document.getElementById('myModal');
+        modal.style.display = 'none';
+    }
+
+    // 모달 창 외부 클릭 시 닫기
+    window.onclick = function(event) {
+        const modal = document.getElementById('myModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+</script>
+
+</body>
+</html>
